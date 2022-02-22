@@ -19,14 +19,9 @@ const lighthBoxMarkup = item => {
 
 const lightBoxGalleryInserted = galleryItems.map(lighthBoxMarkup).join('');
 
-const handler = event => {
-  event.preventDefault();
-  let gallery = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
+galleryEl.insertAdjacentHTML("beforeend", lightBoxGalleryInserted);
+let gallery = new SimpleLightbox(".gallery a", {
+    captionsData: "alt",
     captionDelay: 250,
-  });
-  return gallery;
-};
-
-galleryEl.insertAdjacentHTML('beforeend', lightBoxGalleryInserted);
-galleryEl.addEventListener('click', handler);
+    captionPosition: "botton",
+});
