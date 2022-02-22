@@ -2,42 +2,31 @@
 import { galleryItems } from './gallery-items';
 // Change code below this line
 
-// Описан в документации
 import SimpleLightbox from 'simplelightbox';
-// Дополнительный импорт стилей
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 console.log(galleryItems);
 
-const gallaryEl = document.querySelector(".gallery");
-const createImageMarkupList = createImageMarkup(galleryItems);
+const galleryEl = document.querySelector('.gallery');
 
-function createImageMarkup(galleryItems) {
-  return galleryItems
-    .map(({ original, preview, description }) => {
-      return `
-      <div class="gallery__item">
-      <a class="gallery__link" href="${original}">
-        <img
-          class="gallery__image"
-          src='${preview}'
-          data-source='${original}'
-          alt='${description}'
-        />
-      </a>
-    </div>`;
-    })
-    .join("");
-}
+const lighthBoxMarkup = item => {
+  const { description, original, preview } = item;
 
-gallaryEl.insertAdjacentHTML("afterbegin", createImageMarkupList);
-gallaryEl.addEventListener("click", onGallaryClick);
+  return `<a class="gallery__item" href="${original}">
+    <img class="gallery__image" src="${preview}" alt="${description}" />
+  </a>`;
+};
 
-function onGallaryClick(event) {
+const lightBoxGalleryInserted = galleryItems.map(lighthBoxMarkup).join('');
+
+const handler = event => {
   event.preventDefault();
-  const item = event.target.dataset.source;
-  const instanse = basicLightbox.create(`
-  <img src ="${item}" width="800" height="600">
-  `);
-  instanse.show();
-}
+  let gallery = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+  return gallery;
+};
+
+galleryEl.insertAdjacentHTML('beforeend', lightBoxGalleryInserted);
+galleryEl.addEventListener('click', handler);
